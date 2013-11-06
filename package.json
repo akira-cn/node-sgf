@@ -4,7 +4,7 @@
   "keywords": ["sgf", "format", "go", "weiqi", "baduk", "parse", "parsing"],
   "version": "0.0.4",
   "repository": {
-    "url": "git@github.com:akira-cn/node-sgf.git"
+    "url": "git://github.com/curious-attempt-bunny/node-sgf.git"
   },
   "main": "index.js",
   "scripts": {
