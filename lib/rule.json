@@ -1,0 +1,24 @@
+{
+  "lex": {
+    "rules": [
+      ["\\s+",       "/* skip whitespace */"],
+      ["[A-Z]+",     "return 'PROP_IDENT';"],
+      ["\\[(?:\\\\.|[^\\\\\\]])*\\]", "return 'PROP_VALUE';"],
+      [";",          "return 'NODE_START';"],
+      ["\\(",        "return 'TREE_START';"],
+      ["\\)",        "return 'TREE_END';"],
+      ["$",          "return 'EOF';"]
+    ]
+  },  
+  "bnf": {
+    "collection" : [["game_trees EOF", "return $1;"]],
+    "game_trees" : [["game_tree game_trees", "$2.unshift($1); $$ = $2;"], ["game_tree", "$$ = [$1];"]],
+    "game_tree" : [["TREE_START sequence game_trees TREE_END", "$2.push.apply($2,$3); $$ = $2;"],["TREE_START sequence TREE_END", "$$ = $2;"]],
+    "sequence" : [["nodes", "$$ = $1;"]],
+    "nodes" : [["node nodes", "$2.unshift($1); $$ = $2;"], ["node", "$$ = [$1];"]],
+    "node" : [["NODE_START properties", "$$ = $2;"]],
+    "properties" : [["property properties", "$2[$1.type] = $1.values; $$ = $2;"], ["property", "$$ = {}; $$[$1.type] = $1.values;"]],
+    "property" : [["PROP_IDENT prop_values", "$$ = {type: $1, values: $2};"]],
+    "prop_values" : [["PROP_VALUE prop_values", "$2.unshift($1.substring(1, $1.length-1)); $$ = $2;"], ["PROP_VALUE", "$$ = [$1.substring(1, $1.length-1)];"]]
+  }
+}
