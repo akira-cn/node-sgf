@@ -13,7 +13,7 @@ SGF parsing for Go games
 # Installation
 
 ```
-    npm install node-sgf
+    npm install sgf
 ```
 
 # Rebuild
